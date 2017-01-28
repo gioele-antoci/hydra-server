@@ -4,13 +4,17 @@ var Promise = require("bluebird");
 var express = require('express');
 var moment = require('moment');
 var request = require('request');
-var app = express();
-app.use(cors());
-app.use(bodyParser.json());
+var server = express();
+server.use(cors());
+server.use(bodyParser.json());
 // create application/x-www-form-urlencoded parser
 bodyParser.urlencoded({ extended: true });
-process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
-request = request.defaults({ "proxy": 'http://127.0.0.1:8888' });
+if (process.env.debug) {
+    process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
+    request = request.defaults({ "proxy": 'http://127.0.0.1:8888' });
+}
+var server_port = process.env.OPENSHIFT_NODEJS_PORT || 3001;
+var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 var login = function (user, password) {
     return new Promise(function (resolve, reject) {
         request.post({
@@ -89,7 +93,7 @@ var getDetailsData = function (cookie, start, end) {
         });
     });
 };
-app.post('/login', function (req, res) {
+server.post('/login', function (req, res) {
     var body = req.body;
     login(body.user, body.password)
         .then(function (cookie) {
@@ -101,7 +105,7 @@ app.post('/login', function (req, res) {
         }
     });
 });
-app.post('/data/summary', function (req, res) {
+server.post('/data/summary', function (req, res) {
     var body = req.body;
     login(body.user, body.password)
         .then(function (cookie) {
@@ -111,7 +115,7 @@ app.post('/data/summary', function (req, res) {
         });
     });
 });
-app.post('/data/details', function (req, res) {
+server.post('/data/details', function (req, res) {
     var body = req.body;
     login(body.user, body.password)
         .then(function (cookie) {
@@ -121,7 +125,7 @@ app.post('/data/details', function (req, res) {
         });
     });
 });
-app.listen("3001", function () {
-    console.log('Server listening');
+server.listen(server_port, server_ip_address, function () {
+    console.log("Listening on " + server_ip_address + ", port " + server_port);
 });
 //# sourceMappingURL=server.js.map
