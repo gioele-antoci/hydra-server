@@ -1,0 +1,41 @@
+{
+  "name": "hydra-server",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@types/bluebird": "^3.0.37",
+    "@types/body-parser": "^0.0.33",
+    "@types/cors": "^2.8.0",
+    "@types/express": "^4.0.35",
+    "@types/moment": "^2.13.0",
+    "@types/node": "^7.0.3",
+    "@types/request": "^0.0.39",
+    "@types/request-promise": "^4.1.33",
+    "bluebird": "^3.4.7",
+    "body-parser": "^1.16.0",
+    "typescript": "^2.1.5",
+    "cors": "^2.8.1",
+    "express": "^4.14.0",
+    "moment": "^2.17.1",
+    "require": "^2.4.20",
+    "request": "^2.79.0",
+    "request-promise": "^4.1.1"
+  },
+  "scripts": {
+    "build": "tsc -p src && npm dist/server.js"
+  },
+  "description": "Server powering the hydra",
+  "main": "dist/server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gioele-antoci/hydra-server.git"
+  },
+  "keywords": [
+    "hydra"
+  ],
+  "author": "Gioele Antoci",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gioele-antoci/hydra-server/issues"
+  }
+}
