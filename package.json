@@ -22,7 +22,8 @@
     "request-promise": "^4.1.1"
   },
   "scripts": {
-    "build": "tsc -p src && npm dist/server.js"
+    "build": "tsc -p src",
+    "start": "node dist/server.js"
   },
   "description": "Server powering the hydra",
   "main": "dist/server.js",

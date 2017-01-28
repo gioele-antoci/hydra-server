@@ -7,15 +7,20 @@ import express = require('express')
 import moment = require('moment')
 var request = require('request');
 
-var app = express();
-app.use(cors());
-app.use(bodyParser.json());
+var server = express();
+server.use(cors());
+server.use(bodyParser.json());
 
 // create application/x-www-form-urlencoded parser
 bodyParser.urlencoded({ extended: true });
 
-process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
-request = request.defaults({ "proxy": 'http://127.0.0.1:8888' }) as any;
+if (process.env.debug) {
+    process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
+    request = request.defaults({ "proxy": 'http://127.0.0.1:8888' }) as any;
+}
+
+const server_port = process.env.OPENSHIFT_NODEJS_PORT || 3001;
+const server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
 
 const login = (user: string, password: string) => {
     return new Promise<string>((resolve, reject) => {
@@ -100,7 +105,7 @@ const getDetailsData = (cookie: string, start: Date, end: Date) => {
     });
 }
 
-app.post('/login', (req, res) => {
+server.post('/login', (req, res) => {
     const body = req.body;
     login(body.user, body.password)
         .then(cookie => {
@@ -114,7 +119,7 @@ app.post('/login', (req, res) => {
 });
 
 
-app.post('/data/summary', (req, res) => {
+server.post('/data/summary', (req, res) => {
     const body = req.body;
 
     login(body.user, body.password)
@@ -126,7 +131,7 @@ app.post('/data/summary', (req, res) => {
         });
 });
 
-app.post('/data/details', (req, res) => {
+server.post('/data/details', (req, res) => {
     const body = req.body;
 
     login(body.user, body.password)
@@ -138,6 +143,7 @@ app.post('/data/details', (req, res) => {
         });
 });
 
-app.listen("3001", function () {
-    console.log('Server listening')
+
+server.listen(server_port, server_ip_address, function () {
+    console.log("Listening on " + server_ip_address + ", port " + server_port)
 });
