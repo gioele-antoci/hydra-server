@@ -13,8 +13,10 @@ if (process.env.debug) {
     process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
     request = request.defaults({ "proxy": 'http://127.0.0.1:8888' });
 }
-var server_port = process.env.OPENSHIFT_NODEJS_PORT || 3001;
-var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
+else {
+    server.use(express.static(__dirname));
+}
+var server_port = process.env.PORT || 3001;
 var login = function (user, password) {
     return new Promise(function (resolve, reject) {
         request.post({
@@ -128,7 +130,7 @@ server.post('/data/details', function (req, res) {
 server.get("/", function (req, res) {
     res.send('Hello World!');
 });
-server.listen(server_port, server_ip_address, function () {
-    console.log("Listening on " + server_ip_address + ", port " + server_port);
+server.listen(server_port, function () {
+    console.log("Listening on port " + server_port);
 });
 //# sourceMappingURL=server.js.map
