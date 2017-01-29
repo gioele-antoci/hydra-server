@@ -128,7 +128,7 @@ server.post('/data/details', function (req, res) {
     });
 });
 server.get("/", function (req, res) {
-    res.send('Hello World!');
+    res.send('What are you here for?');
 });
 server.listen(server_port, function () {
     console.log("Listening on port " + server_port);

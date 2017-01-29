@@ -145,7 +145,7 @@ server.post('/data/details', (req, res) => {
 });
 
 server.get("/", (req, res) => {
-    res.send('Hello World!');
+    res.send('What are you here for?');
 });
 
 server.listen(server_port, function () {

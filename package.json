@@ -24,7 +24,7 @@
   "scripts": {
     "build": "tsc -p src",
     "start": "node dist/server.js"
-  },
+  },  
   "description": "Server powering the hydra",
   "main": "dist/server.js",
   "repository": {
