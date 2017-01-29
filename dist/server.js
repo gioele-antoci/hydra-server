@@ -125,6 +125,9 @@ server.post('/data/details', function (req, res) {
         });
     });
 });
+server.get("/", function (req, res) {
+    res.send('Hello World!');
+});
 server.listen(server_port, server_ip_address, function () {
     console.log("Listening on " + server_ip_address + ", port " + server_port);
 });
