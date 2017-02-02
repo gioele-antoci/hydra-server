@@ -31,6 +31,10 @@ var login = function (user, password) {
                 reject(response);
                 return;
             }
+            else if (parseInt(response.statusCode) !== 302) {
+                reject(response);
+                return;
+            }
             var cookieString = "";
             var cookieArray = response.headers['set-cookie'];
             cookieArray.forEach(function (cookie) {
@@ -102,9 +106,10 @@ server.post('/login', function (req, res) {
         if (cookie) {
             res.sendStatus(200);
         }
-        else {
-            res.sendStatus(401);
-        }
+    })
+        .catch(function (error) {
+        res.sendStatus(401);
+        res.send(error);
     });
 });
 server.post('/data/summary', function (req, res) {

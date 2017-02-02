@@ -38,8 +38,14 @@ const login = (user: string, password: string) => {
                     reject(response);
                     return;
                 }
-                var cookieString = "";
-                var cookieArray: string[] = response.headers['set-cookie'];
+
+                else if (parseInt(response.statusCode) !== 302) {                    
+                    reject(response);
+                    return;
+                }
+
+                let cookieString = "";
+                const cookieArray: string[] = response.headers['set-cookie'];
                 cookieArray.forEach(cookie => {
                     cookie = cookie.split(";").filter(x => x.indexOf("JSESSIONID") !== -1).toString();
                     if (cookie && cookieString.indexOf(cookie) === -1) {
@@ -112,10 +118,11 @@ server.post('/login', (req, res) => {
         .then(cookie => {
             if (cookie) {
                 res.sendStatus(200);
-            }
-            else {
-                res.sendStatus(401);
-            }
+            }            
+        })
+        .catch(error => {
+            res.sendStatus(401);
+            res.send(error);
         });
 });
 
